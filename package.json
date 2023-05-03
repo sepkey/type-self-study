@@ -1,5 +1,14 @@
 {
   "name": "my-app",
   "description": "My React and TypeScript app",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
