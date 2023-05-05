@@ -1,5 +1,5 @@
 import './App.css';
-import { Alert } from './components/Alert';
+import { Alert } from './Alert';
 
 function App() {
   return (
