@@ -1,12 +1,29 @@
 import './App.css';
-import { Alert } from './Alert';
+import { Checklist } from './checklist';
 
 function App() {
   return (
     <div className="container">
-      <Alert heading="success" closable>
-        I'm feeling good
-      </Alert>
+      <Checklist
+        data={[
+          { id: 1, name: 'Rose', role: 'Manager' },
+          { id: 1, name: 'Dan', role: 'Product owner' },
+        ]}
+        id="id"
+        primary="name"
+        secondary="role"
+      />
+
+      <Checklist
+        data={[
+          { name: 'Sepide', surname: 'Kia', age: 32 },
+          { name: 'Hamed', surname: 'Nabat', age: 31 },
+          { name: 'Navid', surname: 'Baba', age: 35 },
+        ]}
+        id="age"
+        primary="name"
+        secondary="surname"
+      />
     </div>
   );
 }
