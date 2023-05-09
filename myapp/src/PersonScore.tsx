@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getPerson } from './getPerson';
 
-export function PersonScore() {
+export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   const [name, setName] = useState<string | undefined>();
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ export function PersonScore() {
 
   return (
     <div>
-      <p>jhgbkgb</p>
+      <p>{greeting}</p>
       <h3>
         {name}, {score}
       </h3>
@@ -33,5 +33,9 @@ export function PersonScore() {
   );
 }
 
+//1
 //if you put the return value of loading null, and then hover over the component you will see that the return type is null or JSX.Element
-//So notice that in this conditional cases it's better not to annotate return type explicitly
+//So notice that in these conditional cases it's better not to annotate return type explicitly
+
+//2
+//If you wanna make a property in props object optional, you have to use ? , even in cases that you've already provided the default value for the property
