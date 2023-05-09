@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { PersonScore } from './PersonScore';
 function App() {
   return (
