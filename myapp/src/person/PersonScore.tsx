@@ -1,49 +1,107 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { getPerson } from './getPerson';
 
+type State = {
+  name: string | undefined;
+  score: number;
+  draft: number;
+  loading: boolean;
+};
+
+type Action =
+  | { type: 'initialize'; name: string }
+  | { type: 'increment' }
+  | { type: 'decrement' }
+  | { type: 'reset' }
+  | { type: 'updateDraft'; draft: number }
+  | { type: 'updateScore'; score: number };
+
+const initialState: State = {
+  draft: 0,
+  loading: true,
+  score: 0,
+  name: undefined,
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'initialize':
+      return { ...state, name: action.name, loading: false };
+    case 'increment':
+      return { ...state, score: state.score + 1 };
+    case 'decrement':
+      return { ...state, score: state.score - 1 };
+    case 'reset':
+      return { ...state, score: 0 };
+    case 'updateScore':
+      return { ...state, score: action.score };
+    case 'updateDraft':
+      return { ...state, draft: action.draft };
+    default:
+      return state;
+  }
+};
+
 export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
-  const [name, setName] = useState<string | undefined>();
-  const [score, setScore] = useState(0);
-  const [draft, setDraft] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
+  //<Reducer<State, Action>>
+  const [{ name, score, draft, loading }, dispatch] = useReducer(reducer, initialState);
+
   useEffect(() => {
-    getPerson().then((person) => {
-      console.log(person);
-      setLoading(false);
-      setName(person.name);
-      // console.log('State values', loading, name);
-    });
+    getPerson().then((person) => dispatch({ type: 'initialize', name: person.name }));
   }, []);
 
   // useEffect(() => {
   //   setDraft(score);
   // }, [score]);
 
-  useEffect(() => {
-    setTimeout(() => setDraft(0), 10000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => setDraft(0), 10000);
+  // });
   //this is under useEffect because of hooks rules
   if (loading) return <div>...loading</div>;
   return (
-    <div>
+    <main className="w-full max-w-2xl py-16 mx-auto  bg-red-200">
       <p>{greeting}</p>
       <h3>
         {name}, {score}
       </h3>
-      <button onClick={() => setScore(score + 1)}>Add</button>
-      <button onClick={() => setScore(score - 1)}>Subtract</button>
-      <button onClick={() => setScore(0)}>Reset</button>
+      <button
+        className="px-10 mx-2 rounded  bg-blue-100"
+        onClick={() => dispatch({ type: 'increment' })}
+      >
+        Add
+      </button>
+      <button
+        className="px-10 mx-2 rounded  bg-blue-100"
+        onClick={() => dispatch({ type: 'decrement' })}
+      >
+        Subtract
+      </button>
+      <button
+        className="px-10 mx-2 rounded bg-blue-100"
+        onClick={() => dispatch({ type: 'reset' })}
+      >
+        Reset
+      </button>
 
       <form
+        className="my-3"
         onSubmit={(e) => {
           e.preventDefault();
-          setScore(draft);
+          dispatch({ type: 'updateScore', score: draft });
         }}
       >
-        <input type="number" value={draft} onChange={(e) => setDraft(e.target.valueAsNumber)} />
-        <button type="submit">update counter</button>
+        <input
+          className="border rounded-sm border-blue-200"
+          type="number"
+          value={draft}
+          onChange={(e) => dispatch({ type: 'updateDraft', draft: e.target.valueAsNumber })}
+        />
+        <button type="submit" className="px-2 mx-2 rounded-sm bg-black text-white">
+          update counter
+        </button>
       </form>
-    </div>
+    </main>
   );
 }
 

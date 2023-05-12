@@ -1,5 +1,4 @@
-import React from 'react';
-import { PersonScore } from './PersonScore';
+import { PersonScore } from './person/PersonScore';
 function App() {
   return (
     <div className="App">
