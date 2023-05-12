@@ -1,4 +1,5 @@
-import { useEffect, useReducer } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Dispatch, useEffect, useReducer } from 'react';
 import { getPerson } from './getPerson';
 
 type State = {
@@ -8,13 +9,27 @@ type State = {
   loading: boolean;
 };
 
-type Action =
-  | { type: 'initialize'; name: string }
-  | { type: 'increment' }
-  | { type: 'decrement' }
-  | { type: 'reset' }
-  | { type: 'updateDraft'; draft: number }
-  | { type: 'updateScore'; score: number };
+// type Action =
+//   | { type: 'initialize'; payload: string }
+//   | { type: 'increment' }
+//   | { type: 'decrement' }
+//   | { type: 'reset' }
+//   | { type: 'updateDraft'; payload: number }
+//   | { type: 'updateScore'; payload: number };
+
+type Action = {
+  type: 'increment' | 'decrement' | 'reset';
+};
+
+type ActionWithPayload =
+  | {
+      type: 'updateDraft' | 'updateScore';
+      payload: number;
+    }
+  | {
+      type: 'initialize';
+      payload: string;
+    };
 
 const initialState: State = {
   draft: 0,
@@ -23,10 +38,10 @@ const initialState: State = {
   name: undefined,
 };
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (state: State, action: Action | ActionWithPayload): State => {
   switch (action.type) {
     case 'initialize':
-      return { ...state, name: action.name, loading: false };
+      return { ...state, name: action.payload, loading: false };
     case 'increment':
       return { ...state, score: state.score + 1 };
     case 'decrement':
@@ -34,9 +49,9 @@ const reducer = (state: State, action: Action): State => {
     case 'reset':
       return { ...state, score: 0 };
     case 'updateScore':
-      return { ...state, score: action.score };
+      return { ...state, score: action.payload };
     case 'updateDraft':
-      return { ...state, draft: action.draft };
+      return { ...state, draft: action.payload };
     default:
       return state;
   }
@@ -47,7 +62,7 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   const [{ name, score, draft, loading }, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    getPerson().then((person) => dispatch({ type: 'initialize', name: person.name }));
+    getPerson().then((person) => dispatch({ type: 'initialize', payload: person.name }));
   }, []);
 
   // useEffect(() => {
@@ -88,14 +103,14 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
         className="my-3"
         onSubmit={(e) => {
           e.preventDefault();
-          dispatch({ type: 'updateScore', score: draft });
+          dispatch({ type: 'updateScore', payload: draft });
         }}
       >
         <input
           className="border rounded-sm border-blue-200"
           type="number"
           value={draft}
-          onChange={(e) => dispatch({ type: 'updateDraft', draft: e.target.valueAsNumber })}
+          onChange={(e) => dispatch({ type: 'updateDraft', payload: e.target.valueAsNumber })}
         />
         <button type="submit" className="px-2 mx-2 rounded-sm bg-black text-white">
           update counter
