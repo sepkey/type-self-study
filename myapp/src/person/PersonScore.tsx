@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Dispatch, useEffect, useReducer } from 'react';
+import { useRef, useEffect, useReducer } from 'react';
 import { getPerson } from './getPerson';
 
 type State = {
@@ -61,9 +61,17 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   //<Reducer<State, Action>>
   const [{ name, score, draft, loading }, dispatch] = useReducer(reducer, initialState);
 
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     getPerson().then((person) => dispatch({ type: 'initialize', payload: person.name }));
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      addButtonRef.current?.focus();
+    }
+  }, [loading]);
 
   // useEffect(() => {
   //   setDraft(score);
@@ -73,6 +81,7 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   //   setTimeout(() => setDraft(0), 10000);
   // });
   //this is under useEffect because of hooks rules
+
   if (loading) return <div>...loading</div>;
   return (
     <main className="w-full max-w-2xl py-16 mx-auto  bg-red-200">
@@ -83,6 +92,7 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
       <button
         className="px-10 mx-2 rounded  bg-blue-100"
         onClick={() => dispatch({ type: 'increment' })}
+        ref={addButtonRef}
       >
         Add
       </button>
@@ -155,3 +165,9 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
 // useEffect(() => setTimeout(setCount(0), 31536000000));
 //useEffect expects the function you hand it to return either nothing or a function that it should call when the component is unmounting. Luckily, this fix is simple. Add back those curly braces to the function so that it doesn't automatically return a value.
 //We didn't run into that problem with setDraft because setDraft returns void (e.g. undefined) anyway.
+
+///6
+///useRef
+/// Value is persisted for the lifetime of a component. This means that the variable doesn’t lose its value when a component re-renders.  The ref can be changed without causing a re-render.
+//const ref = useRef<Ref>(initialValue);
+//const inputRef = useRef<HTMLInputElement>(null);
