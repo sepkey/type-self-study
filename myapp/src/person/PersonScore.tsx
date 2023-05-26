@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useRef, useEffect, useReducer, useMemo } from 'react';
+import { useRef, useEffect, useReducer, useMemo, useCallback } from 'react';
 import { getPerson } from './getPerson';
+import { Reset } from './Reset';
 
 function sillyExpensiveFunction() {
   console.log('Executing silly function');
@@ -26,11 +27,11 @@ type State = {
 //   | { type: 'updateDraft'; payload: number }
 //   | { type: 'updateScore'; payload: number };
 
-type Action = {
+export type Action = {
   type: 'increment' | 'decrement' | 'reset';
 };
 
-type ActionWithPayload =
+export type ActionWithPayload =
   | {
       type: 'updateDraft' | 'updateScore';
       payload: number;
@@ -95,7 +96,14 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   // const expensiveCalculation = sillyExpensiveFunction();
   const expensiveCalculation = useMemo<number>(() => sillyExpensiveFunction(), []);
 
+  const handleReset = useCallback(() => dispatch({ type: 'reset' }), []);
+
   if (loading) return <div>...loading</div>;
+
+  // function handleReset() {
+  //   dispatch({ type: 'reset' });
+  // }
+
   return (
     <main className="w-full max-w-2xl py-16 mx-auto  bg-red-200">
       <p>{greeting}</p>
@@ -116,13 +124,14 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
       >
         Subtract
       </button>
-      <button
+      {/* <button
         className="px-10 mx-2 rounded bg-blue-100"
         onClick={() => dispatch({ type: 'reset' })}
       >
         Reset
-      </button>
-
+      </button> */}
+      {/* <Reset dispatch={dispatch} /> */}
+      <Reset onClick={handleReset} />
       <form
         className="my-3"
         onSubmit={(e) => {
@@ -196,3 +205,9 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
 //The type of the memoized function is inferred but can be explicitly defined in a generic parameter
 //const memoizedValue = useCallback<() => void>(() => someFunction (),[]);
 //A common use case for useCallback is to prevent unnecessary re-renders of child components
+
+//9
+//We could send both onClick and dispatch as props to Reset component, but it turns out that onClick is cleaner as it doesn't require actions type in Dispatch generic type
+
+//10
+//useCallback example must be read again and again
