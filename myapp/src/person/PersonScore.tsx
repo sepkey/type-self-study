@@ -93,7 +93,7 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
 
   // //expensive:
   // const expensiveCalculation = sillyExpensiveFunction();
-  const expensiveCalculation = useMemo(() => sillyExpensiveFunction(), []);
+  const expensiveCalculation = useMemo<number>(() => sillyExpensiveFunction(), []);
 
   if (loading) return <div>...loading</div>;
   return (
@@ -185,3 +185,14 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
 /// Value is persisted for the lifetime of a component. This means that the variable doesn’t lose its value when a component re-renders.  The ref can be changed without causing a re-render.
 //const ref = useRef<Ref>(initialValue);
 //const inputRef = useRef<HTMLInputElement>(null);
+
+//7
+///useMemo
+//The type of the memoized value is inferred but can be explicitly defined in a generic parameter .
+// const memoizedValue = useMemo<number>(() => expensiveCalculation(),[] );
+
+//8
+//useCallback
+//The type of the memoized function is inferred but can be explicitly defined in a generic parameter
+//const memoizedValue = useCallback<() => void>(() => someFunction (),[]);
+//A common use case for useCallback is to prevent unnecessary re-renders of child components
