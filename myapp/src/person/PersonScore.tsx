@@ -1,6 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useRef, useEffect, useReducer } from 'react';
+import { useRef, useEffect, useReducer, useMemo } from 'react';
 import { getPerson } from './getPerson';
+
+function sillyExpensiveFunction() {
+  console.log('Executing silly function');
+  let sum = 0;
+  for (let i = 0; i < 10000; i++) {
+    sum += i;
+  }
+  return sum;
+}
 
 type State = {
   name: string | undefined;
@@ -82,6 +91,10 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
   // });
   //this is under useEffect because of hooks rules
 
+  // //expensive:
+  // const expensiveCalculation = sillyExpensiveFunction();
+  const expensiveCalculation = useMemo<number>(() => sillyExpensiveFunction(), []);
+
   if (loading) return <div>...loading</div>;
   return (
     <main className="w-full max-w-2xl py-16 mx-auto  bg-red-200">
@@ -89,6 +102,7 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
       <h3>
         {name}, {score}
       </h3>
+      <p>{expensiveCalculation}</p>
       <button
         className="px-10 mx-2 rounded  bg-blue-100"
         onClick={() => dispatch({ type: 'increment' })}
@@ -171,3 +185,14 @@ export function PersonScore({ greeting = 'sep' }: { greeting?: string }) {
 /// Value is persisted for the lifetime of a component. This means that the variable doesn’t lose its value when a component re-renders.  The ref can be changed without causing a re-render.
 //const ref = useRef<Ref>(initialValue);
 //const inputRef = useRef<HTMLInputElement>(null);
+
+//7
+///useMemo
+//The type of the memoized value is inferred but can be explicitly defined in a generic parameter .
+// const memoizedValue = useMemo<number>(() => expensiveCalculation(),[] );
+
+//8
+//useCallback
+//The type of the memoized function is inferred but can be explicitly defined in a generic parameter
+//const memoizedValue = useCallback<() => void>(() => someFunction (),[]);
+//A common use case for useCallback is to prevent unnecessary re-renders of child components
