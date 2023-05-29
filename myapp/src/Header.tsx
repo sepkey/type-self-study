@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from './image/logo.png';
 
 export function Header() {
@@ -7,8 +7,13 @@ export function Header() {
       className="text-center text-slate-900
   bg-slate-200 h-40 p-5"
     >
-      <img src={logo} alt="Logo" className="inline-block h-20" />
-      <h1 className="text-2xl">React Tools</h1>
+      <Link to="">
+        <img src={logo} alt="Logo" className="inline-block h-20" />
+      </Link>
+      <Link to="">
+        <h1 className="text-2xl">React Tools</h1>
+      </Link>
+
       <nav>
         <NavLink
           to="products"
