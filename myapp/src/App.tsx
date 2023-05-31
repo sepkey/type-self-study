@@ -1,9 +1,11 @@
-import { PersonScore } from './person/PersonScore';
+import { Outlet } from 'react-router-dom';
+import { Header } from './Header';
 function App() {
   return (
-    <div className="App">
-      <PersonScore />
-    </div>
+    <>
+      <Header />
+      <Outlet />
+    </>
   );
 }
 export default App;
