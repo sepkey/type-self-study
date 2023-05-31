@@ -1,26 +1,31 @@
-import { Link, NavLink, useSearchParams, useNavigate } from 'react-router-dom';
-import { FormEvent } from 'react';
+import { Link, NavLink, useSearchParams, useNavigate, Form } from 'react-router-dom';
+// import { FormEvent } from 'react';
 import logo from './image/logo.png';
 
 export function Header() {
-  // const [searchParams, setSearchParams] = useSearchParams();
-  const [searchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();//first approach
 
-  const nav = useNavigate();
-  function handleSearchSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const search = formData.get('search') as string;
+  const [searchParams] = useSearchParams(); //second approach
+  // const nav = useNavigate(); //second approach
 
-    // setSearchParams({ search: search });
-    nav(`/products/?search=${search}`);
-  }
+  // function handleSearchSubmit(e: FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const search = formData.get('search') as string;
+
+  //   // setSearchParams({ search: search });//first approach
+  //   // nav(`/products/?search=${search}`); //second approach
+  // }
   return (
     <header
       className="text-center text-slate-900
   bg-slate-200 h-40 p-5"
     >
-      <form className="relative text-right" onSubmit={handleSearchSubmit}>
+      <Form
+        className="relative text-right"
+        action="/products" //third approach
+        //  onSubmit={handleSearchSubmit}
+      >
         <input
           type="search"
           name="search"
@@ -29,7 +34,7 @@ export function Header() {
           className="absolute right-0 top-0 rounded py-2 px-3
 text-gray-700"
         />
-      </form>
+      </Form>
       <Link to="">
         <img src={logo} alt="Logo" className="inline-block h-20" />
       </Link>
