@@ -52,6 +52,15 @@ border-b-2 ${isActive ? 'border-cyan-600' : 'border-transparent'}`
         >
           Products
         </NavLink>
+        <NavLink
+          to="admin"
+          className={({ isActive }) =>
+            `text-slate-600 no-underline p-1 pb-0.5 border-solid
+border-b-2 ${isActive ? 'border-cyan-600' : 'border-transparent'}`
+          }
+        >
+          Admin
+        </NavLink>
       </nav>
     </header>
   );
