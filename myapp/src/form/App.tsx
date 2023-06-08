@@ -1,4 +1,6 @@
-import ContactPage, { contactPageAction } from './ContactPage';
+// import ContactPage, { contactPageAction } from './ContactPage';//React router approach
+import ContactPage from './ContactPage';
+
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import ThankYouPage from './ThankYouPage';
 
@@ -10,7 +12,7 @@ const router = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />,
-    action: contactPageAction,
+    // action: contactPageAction,//React router approach
   },
   {
     path: '/thank-you/:name',
