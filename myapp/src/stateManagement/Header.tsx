@@ -1,4 +1,4 @@
-import { User } from './api/authenticate';
+import { User } from './models';
 
 type Props = {
   user: undefined | User;

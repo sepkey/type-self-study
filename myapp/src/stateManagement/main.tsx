@@ -1,5 +1,5 @@
-import Content from './Content';
-import { User } from './api/authenticate';
+import { Content } from './Content';
+import { User } from './models';
 type Props = {
   user: undefined | User;
   permissions: undefined | string[];
