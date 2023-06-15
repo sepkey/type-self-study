@@ -337,12 +337,10 @@ const ContactPage = () => {
           </select>
           <ValidationError fieldError={errors.reason} />
         </div>
-
         <div className={fieldStyle}>
           <label htmlFor="notes">Additional notes</label>
           <textarea id="notes" {...register('notes')} />
         </div>
-
         <div className={fieldStyle}>
           <button
             type="submit"
