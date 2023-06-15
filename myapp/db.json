@@ -9,11 +9,6 @@
       "title": "Getting started with useEffect",
       "description": "How to use React's useEffect hook for interacting with backend APIs",
       "id": 2
-    },
-    {
-      "title": "Getting started with type",
-      "description": "How to use typescript in react",
-      "id": 3
     }
   ]
 }
