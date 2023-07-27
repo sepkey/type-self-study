@@ -1,28 +1,8 @@
 import { useAppContext } from './AppContext';
-import { authorize } from './api/authorize';
-import { authenticate } from './api/authenticate';
 
 export function Header() {
-  const { user, loading, dispatch } = useAppContext();
-  async function handleSignInClick() {
-    dispatch({ type: 'authenticate' });
-    const authenticatedUser = await authenticate();
-    console.log('1---', authenticatedUser);
-    dispatch({
-      type: 'authenticated',
-      user: authenticatedUser,
-    });
-    if (authenticatedUser !== undefined) {
-      dispatch({ type: 'authorize' });
-      const authorizedPermissions = await authorize(authenticatedUser.id);
-      console.log('2---', authorizedPermissions);
+  const { user, loading, handleSignIn: handleSignInClick } = useAppContext();
 
-      dispatch({
-        type: 'authorized',
-        permissions: authorizedPermissions,
-      });
-    }
-  }
   return (
     <header
       className="flex justify-between items-center
