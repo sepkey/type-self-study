@@ -1,8 +1,9 @@
-import { useAppContext } from './AppContext';
 import { Content } from './Content';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 
 export function Main() {
-  const { user } = useAppContext();
+  const user = useSelector((state: RootState) => state.user.user);
   return (
     <main className="py-8">
       <h1
