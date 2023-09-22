@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef, ReactNode, useState } from 'react';
-import { IdValue } from './types';
+import { IdValue } from '../types';
 type Props<Data> = {
   data: Data[];
   id: keyof Data;

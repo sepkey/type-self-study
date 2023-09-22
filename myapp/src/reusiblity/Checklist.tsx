@@ -1,61 +1,55 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
-
-import useChecked from './useChecked-v2';
+import { useChecked } from './useChecked';
 import { IdValue } from './types';
+import { isChecked } from './isChecked';
+import { assertValueCanBeRendered } from './assertValueCanBeRendered';
 
 type Props<Data> = {
   data: Data[];
   id: keyof Data;
   primary: keyof Data;
   secondary: keyof Data;
-  render?: (item: Data) => ReactNode;
+  renderItem?: (item: Data, isChecked: boolean) => ReactNode;
   checkedIds?: IdValue[];
   onCheckedIdsChange?: (checkedIds: IdValue[]) => void;
 } & ComponentPropsWithoutRef<'ul'>;
 
-export default function Checklist6<Data>({
+export function Checklist<Data>({
   data,
   id,
   primary,
   secondary,
-  render,
+  renderItem,
   checkedIds,
   onCheckedIdsChange,
   ...ulProps
 }: Props<Data>) {
-  const { handleCheckChange, resolvedCheckedIds } = useChecked({ checkedIds, onCheckedIdsChange });
-
+  const { resolvedCheckedIds, handleCheckChange } = useChecked({
+    checkedIds,
+    onCheckedIdsChange,
+  });
   return (
     <ul className="bg-gray-300 rounded p-10" {...ulProps}>
       {data.map((item) => {
-        if (render) {
-          return render(item);
-        }
         const idValue = item[id] as unknown;
-        if (typeof idValue !== 'string' && typeof idValue !== 'number') {
-          return null;
+        assertValueCanBeRendered(idValue);
+        if (renderItem) {
+          return renderItem(item, isChecked(resolvedCheckedIds, idValue));
         }
-
         const primaryText = item[primary] as unknown;
-        if (typeof primaryText !== 'string') {
-          return null;
-        }
+        assertValueCanBeRendered(primaryText);
         const secondaryText = item[secondary] as unknown;
-
         return (
-          <li
-            key={idValue}
-            className="bg-white p-6 shadow rounded mb-4
-            last:mb-0"
-          >
+          <li key={idValue} className="bg-white p-6 shadow rounded mb-4 last:mb-0">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={resolvedCheckedIds.includes(idValue)}
+                checked={isChecked(resolvedCheckedIds, idValue)}
                 onChange={handleCheckChange(idValue)}
+                data-testid={`Checklist__input__${idValue.toString()}`}
               />
               <div className="ml-2">
-                <div className="text-xl text-gray-800 pb-1"> {primaryText} </div>
+                <div className="text-xl text-gray-800 pb-1">{primaryText}</div>
                 {typeof secondaryText === 'string' && (
                   <div className="text-sm text-gray-500">{secondaryText}</div>
                 )}

@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { IdValue } from './types';
-// import Checklist1 from './Checklist-1';
-// import Checklist2 from './Checklist-2';
-// import Checklist3 from './Checklist-3';
-// import Checklist4 from './Checklist-4';
-import Checklist6 from './Checklist-6';
+import { Checklist } from './Checklist';
 
 const data = [
   {
@@ -80,7 +76,7 @@ export default function App() {
           </li>
         )}
       /> */}
-      <Checklist6
+      <Checklist
         data={data}
         id="productId"
         primary="productTitle"
